@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id("com.android.application")
 }
 
 android {
@@ -38,10 +38,10 @@ android {
 
 dependencies {
     // 🔹 AndroidX / Material
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.activity:activity:1.8.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.github.lzyzsd:circleprogress:1.2.1")
@@ -58,7 +58,7 @@ dependencies {
 
     // ✅ (optionnel si tu utilises Jetpack Compose)
     implementation("androidx.compose.ui:ui-text-google-fonts:1.9.0")
-    implementation(libs.ui.text)
+    implementation("androidx.compose.ui:ui-text:1.5.4")
 
     // ✅ Firebase BoM - centralise les versions Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
@@ -78,14 +78,14 @@ dependencies {
     implementation("com.tbuonomo:dotsindicator:4.3")
 
     // ✅ Google Identity Services (nouvelle API login Google)
-    implementation(libs.credentials)
-    implementation(libs.credentials.play.services.auth)
-    implementation(libs.googleid)
+    implementation("androidx.credentials:credentials:1.2.2")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 
     // 🔹 Tests
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
 // ⚠️ Le plugin Firebase doit être appliqué APRÈS les dépendances
