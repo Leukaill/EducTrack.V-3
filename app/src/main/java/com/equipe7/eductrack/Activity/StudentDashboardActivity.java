@@ -2,93 +2,112 @@ package com.equipe7.eductrack.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.equipe7.eductrack.Adapter.StudentAdapter;
-import com.equipe7.eductrack.Auth.ActivityStudentRegister;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 import com.equipe7.eductrack.R;
-import com.equipe7.eductrack.Utils.Student;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StudentDashboardActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private StudentAdapter adapter;
-    private List<Student> studentList;
-    private EditText etSearch;
-    private Button btnCreateStudent;
-
-    private DatabaseReference studentRef;
+    private TextView tvStudentName, tvAttendanceRate, tvGradeAverage;
+    private ImageView ivNotifications, ivProfile;
+    private MaterialCardView cardCourses, cardHomework, cardExams, cardResults;
+    private BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_dashboard);
 
-        recyclerView = findViewById(R.id.recyclerStudents);
-        etSearch = findViewById(R.id.etSearchAdmin);
-        btnCreateStudent = findViewById(R.id.btnCreateStudent);
+        initViews();
+        setupClickListeners();
+        loadStudentData();
+    }
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        studentList = new ArrayList<>();
-        adapter = new StudentAdapter(studentList);
-        recyclerView.setAdapter(adapter);
+    private void initViews() {
+        tvStudentName = findViewById(R.id.tvStudentName);
+        tvAttendanceRate = findViewById(R.id.tvAttendanceRate);
+        tvGradeAverage = findViewById(R.id.tvGradeAverage);
+        ivNotifications = findViewById(R.id.ivNotifications);
+        ivProfile = findViewById(R.id.ivProfile);
+        cardCourses = findViewById(R.id.cardCourses);
+        cardHomework = findViewById(R.id.cardHomework);
+        cardExams = findViewById(R.id.cardExams);
+        cardResults = findViewById(R.id.cardResults);
+        bottomNavigation = findViewById(R.id.bottomNavigation);
+    }
 
-        // Référence Firebase (Realtime Database)
-        studentRef = FirebaseDatabase.getInstance().getReference("students");
-
-        // Charger les étudiants
-        loadStudents();
-
-        // Barre de recherche
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.filter(s.toString());
-            }
-            @Override public void afterTextChanged(Editable s) {}
+    private void setupClickListeners() {
+        // Profile click
+        ivProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ActivityProfile.class);
+            startActivity(intent);
         });
 
-        // Bouton pour créer un compte étudiant
-        btnCreateStudent.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentDashboardActivity.this, ActivityStudentRegister.class);
+        // Notifications click
+        ivNotifications.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ActivityNotification.class);
             startActivity(intent);
+        });
+
+        // Courses card
+        cardCourses.setOnClickListener(v -> {
+            // Navigate to courses activity
+            // Intent intent = new Intent(this, CoursesActivity.class);
+            // startActivity(intent);
+        });
+
+        // Homework card
+        cardHomework.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ActivityHomework.class);
+            startActivity(intent);
+        });
+
+        // Exams card
+        cardExams.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ActivityExams.class);
+            startActivity(intent);
+        });
+
+        // Results card
+        cardResults.setOnClickListener(v -> {
+            // Navigate to results activity
+            // Intent intent = new Intent(this, ResultsActivity.class);
+            // startActivity(intent);
+        });
+
+        // Bottom Navigation
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                // Already on home
+                return true;
+            } else if (itemId == R.id.nav_courses) {
+                // Navigate to courses
+                return true;
+            } else if (itemId == R.id.nav_homework) {
+                startActivity(new Intent(this, ActivityHomework.class));
+                return true;
+            } else if (itemId == R.id.nav_results) {
+                // Navigate to results
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, ActivityProfile.class));
+                return true;
+            }
+            return false;
         });
     }
 
-    private void loadStudents() {
-        studentRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                studentList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Student student = ds.getValue(Student.class);
-                    if (student != null) {
-                        studentList.add(student);
-                    }
-                }
-                adapter.notifyDataSetChanged(); // ⚡ rafraîchir la liste
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Gérer les erreurs (logs, toast, etc.)
-            }
-        });
+    private void loadStudentData() {
+        // Set student name (you can get this from SharedPreferences or database)
+        tvStudentName.setText("Student Dashboard");
+        
+        // Load student statistics (replace with actual data from your database)
+        tvAttendanceRate.setText("95%");
+        tvGradeAverage.setText("A-");
     }
 }

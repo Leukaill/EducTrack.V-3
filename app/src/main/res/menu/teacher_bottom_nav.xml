@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    
+    <item
+        android:id="@+id/nav_classes"
+        android:icon="@drawable/ic_courses"
+        android:title="Classes" />
+    
+    <item
+        android:id="@+id/nav_attendance"
+        android:icon="@drawable/ic_attendance"
+        android:title="Attendance" />
+    
+    <item
+        android:id="@+id/nav_grading"
+        android:icon="@drawable/ic_results"
+        android:title="Grading" />
+    
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+</menu>
